@@ -8,15 +8,19 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.http import HttpResponse
 from django import template
+from rest_framework.viewsets import ModelViewSet
+
+from app.models import Order, Traffic, Visit
+from app.serializers import TrafficSerializer, VisitSerializer
+
 
 @login_required(login_url="/login/")
 def index(request):
-    
-    context = {}
-    context['segment'] = 'index'
+    context = {'segment': 'index'}
 
-    html_template = loader.get_template( 'index.html' )
+    html_template = loader.get_template('index.html')
     return HttpResponse(html_template.render(context, request))
+
 
 @login_required(login_url="/login/")
 def pages(request):
@@ -24,19 +28,31 @@ def pages(request):
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
-        
-        load_template      = request.path.split('/')[-1]
+
+        load_template = request.path.split('/')[-1]
         context['segment'] = load_template
-        
-        html_template = loader.get_template( load_template )
+
+        html_template = loader.get_template(load_template)
         return HttpResponse(html_template.render(context, request))
-        
+
     except template.TemplateDoesNotExist:
 
-        html_template = loader.get_template( 'page-404.html' )
+        html_template = loader.get_template('page-404.html')
         return HttpResponse(html_template.render(context, request))
 
     except:
-    
-        html_template = loader.get_template( 'page-500.html' )
+
+        html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+
+
+class TrafficViewSet(ModelViewSet):
+    serializer_class = TrafficSerializer
+    queryset = Traffic.objects.all()
+    http_method_names = ['get']
+
+
+class VisitViewSet(ModelViewSet):
+    serializer_class = VisitSerializer
+    queryset = Visit.objects.all()
+    http_method_names = ['get']

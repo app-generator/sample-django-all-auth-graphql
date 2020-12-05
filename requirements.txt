@@ -9,3 +9,7 @@ dj-database-url
 python-decouple
 gunicorn
 whitenoise
+django-import-export
+djangorestframework
+djangorestframework-simplejwt==4.3.0
+graphene-django
