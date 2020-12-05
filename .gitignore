@@ -15,6 +15,12 @@ __pycache__/
 env
 venv
 
+*.save
+*.swp
+.idea
+*.log
+logs/*.log
+
 # other
 .DS_Store
 
