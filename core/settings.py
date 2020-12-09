@@ -84,7 +84,7 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 5,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'COERCE_DECIMAL_TO_STRING': False,
 }

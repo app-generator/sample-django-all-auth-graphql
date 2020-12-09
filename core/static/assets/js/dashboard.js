@@ -1,32 +1,32 @@
 $(document).ready(function () {
-    var sales_params = [];
-    sales_params['url'] = '/graphql/';
-    sales_params['query'] = JSON.stringify({
-        query: `query {
-                orders_month_report {
-                    month
-                    total
-                }
-                sales_month_report {
-                    month
-                    total_amount
-                }
-            }`
-    });
-    GraghQLAjax(sales_params);
+    // to update orders and sales charts
+    GraghQLAjax();
 
+    // to update traffic and visit tables
     RESTAjax();
-
 });
 
 
 // Ajax functions to update chart and tables
 
 function GraghQLAjax(params) {
+    var query = JSON.stringify({
+        query: `query {
+            orders_month_report {
+                month
+                total
+            }
+            sales_month_report {
+                month
+                total_amount
+            }
+        }`
+    });
+
     $.ajax({
         method: 'POST',
-        url: params['url'],
-        data: params['query'],
+        url: '/graphql/',
+        data: query,
         contentType: 'application/json',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
@@ -34,12 +34,14 @@ function GraghQLAjax(params) {
         success: function (data) {
             var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+            // sales chart
             var sales_chart_data = [];
             $.each(data.data.sales_month_report, function (index, obj) {
                 sales_chart_data.push(obj.total_amount);
             });
             SalesChart(sales_chart_data, months);
 
+            // orders chart
             var orders_chart_data = [];
             $.each(data.data.orders_month_report, function (index, obj) {
                 orders_chart_data.push(obj.total);
@@ -53,8 +55,62 @@ function GraghQLAjax(params) {
     });
 }
 
-function RestAjax(params) {
+function RESTAjax() {
+    // visits tabl # visitsInfo
+    $.ajax({
+        method: 'GET',
+        url: '/api/v1/visits/',
+        success: function (data) {
+            var html_template = '';
+            $.each(data.results, function (index, obj) {
+                html_template += '<tr>';
+                html_template += '<th scope="row">' + obj.page_name + '</th>';
+                html_template += '<td>' + obj.visitors + '</td>';
+                html_template += '<td>' + obj.unique_users + '</td>';
 
+                if (obj.bounce_rate_type === 1)
+                    html_template += '<td><i class="fas fa-arrow-up text-success mr-3"></i>' + obj.bounce_rate + '%</td>';
+                else
+                    html_template += '<td><i class="fas fa-arrow-down text-warning mr-3"></i>' + obj.bounce_rate + '%</td>';
+
+                html_template += '</tr>';
+
+                $('#visitsInfo').find('tbody').html(html_template);
+            });
+        },
+        error: function () {
+            alert('Error occurred');
+        }
+    });
+
+
+    // traffics table # trafficsInfo
+    $.ajax({
+        method: 'GET',
+        url: '/api/v1/traffics/',
+        success: function (data) {
+            var html_template = '';
+            $.each(data.results, function (index, obj) {
+                var bg_gradient = obj.rate_type === 1 ? "bg-gradient-success" : "bg-gradient-danger";
+                html_template += '<tr>';
+                html_template += '<th scope="row">' + obj.referral + '</th>';
+                html_template += '<td>' + obj.visitors + '</td>';
+                html_template += '<td><div class="d-flex align-items-center"><span class="mr-2">' + obj.rate + '%</span>';
+                html_template += '<div><div class="progress">';
+                html_template += '<div class="progress-bar ' + bg_gradient + '" role="progressbar" ' +
+                    'aria-valuenow="' + obj.rate + '" aria-valuemin="0" aria-valuemax="100" ' +
+                    'style="width: ' + obj.rate + '%;"></div>';
+                html_template += '</div></div>';
+                html_template += '</div></td>';
+                html_template += '</tr>';
+
+                $('#trafficsInfo').find('tbody').html(html_template);
+            });
+        },
+        error: function () {
+            alert('Error occurred');
+        }
+    });
 }
 
 
