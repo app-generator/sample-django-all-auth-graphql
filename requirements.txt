@@ -13,3 +13,4 @@ django-import-export
 djangorestframework
 djangorestframework-simplejwt==4.3.0
 graphene-django
+django-filter
