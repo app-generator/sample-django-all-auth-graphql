@@ -77,10 +77,10 @@ To do this just click on ```IMPORT``` button then select your csv, xls or etc fi
 ![Import Data](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
 
 ### Sample data:
- * Orders: **[Download](https://github.com/app-generator/django-simple-charts/blob/master/sample_data/sales_data.csv)**
- * Sales: **[Download](https://github.com/app-generator/django-simple-charts/blob/master/sample_data/sales_data.csv)**
- * Traffics: **[Download](https://github.com/app-generator/django-simple-charts/blob/master/sample_data/sales_data.csv)**
- * Visits: **[Download](https://github.com/app-generator/django-simple-charts/blob/master/sample_data/sales_data.csv)**
+ * Orders: **[Download](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/orders.csv)**
+ * Sales: **[Download](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sales.csv)**
+ * Traffics: **[Download](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/traffics.csv)**
+ * Visits: **[Download](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/visits.csv)**
 
 <br />
 
