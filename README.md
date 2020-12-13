@@ -68,6 +68,22 @@ $ # Access the web app in browser: http://127.0.0.1:8000/
 
 <br />
 
+## Load Data
+
+In Django admin, you can import data for the **Orders**, **Sales**, **Traffics** and **Visits** sections. 
+To do this just click on ```IMPORT``` button then select your csv, xls or etc file and submit it.
+
+### Example:
+![Import Data](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
+
+### Sample data:
+ * Orders: **[Download](https://github.com/app-generator/django-simple-charts/blob/master/sample_data/sales_data.csv)**
+ * Sales: **[Download](https://github.com/app-generator/django-simple-charts/blob/master/sample_data/sales_data.csv)**
+ * Traffics: **[Download](https://github.com/app-generator/django-simple-charts/blob/master/sample_data/sales_data.csv)**
+ * Visits: **[Download](https://github.com/app-generator/django-simple-charts/blob/master/sample_data/sales_data.csv)**
+
+<br />
+
 ## Deployment
 
 The app is provided with a basic configuration to be executed in [Docker](https://www.docker.com/), [Gunicorn](https://gunicorn.org/), and [Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/).
