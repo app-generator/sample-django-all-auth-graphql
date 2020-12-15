@@ -20,45 +20,47 @@
 {% load static %}
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
-  <title>
-    Django Dashboard Argon - {% block title %} Open-Source Admin Panel {% endblock %} | AppSeed
-  </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Favicon - loaded as static -->
-  <link href="{% static 'assets/img/brand/favicon.png' %}" rel="icon" type="image/png">
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-  <!-- Icons -->
-  <link href="/static/assets/js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
-  <link href="/static/assets/js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link href="/static/assets/css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+    <title>
+        Django Dashboard Argon - {% block title %} Open-Source Admin Panel {% endblock %} | AppSeed
+    </title>
 
-  <!-- Specific CSS goes HERE -->
-  {% block stylesheets %}{% endblock stylesheets %}
+    <!-- Favicon - loaded as static -->
+    <link href="{% static 'assets/img/brand/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <!-- Icons -->
+    <link href="/static/assets/js/plugins/nucleo/css/nucleo.css" rel="stylesheet"/>
+    <link href="/static/assets/js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet"/>
+    <!-- CSS Files -->
+    <link href="/static/assets/css/argon-dashboard.css?v=1.1.0" rel="stylesheet"/>
+    <link type="text/css" href="{% static 'assets/js/plugins/notyf/notyf.min.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'app_assets/jquery/css/jquery-confirm.min.css' %}" rel="stylesheet">
+
+    <!-- Specific CSS goes HERE -->
+    {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
 
 <body class="">
 
-  {% include "includes/sidenav.html" %}
+{% include "includes/sidenav.html" %}
 
-  <div class="main-content">
+<div class="main-content">
 
     {% include "includes/navigation.html" %}
 
     {% block content %}{% endblock content %}
 
-  </div>
+</div>
 
-  {% include "includes/scripts.html" %}
+{% include "includes/scripts.html" %}
 
-  <!-- Specific JS goes HERE --> 
-  {% block javascripts %}{% endblock javascripts %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}
 
 </body>
 
