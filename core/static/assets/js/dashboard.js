@@ -28,9 +28,6 @@ function GraghQLAjax(params) {
         url: '/graphql/',
         data: query,
         contentType: 'application/json',
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
-        },
         success: function (data) {
             var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -56,7 +53,6 @@ function GraghQLAjax(params) {
 }
 
 function RESTAjax() {
-    // visits tabl # visitsInfo
     $.ajax({
         method: 'GET',
         url: '/api/v1/visits/',
@@ -84,7 +80,6 @@ function RESTAjax() {
     });
 
 
-    // traffics table # trafficsInfo
     $.ajax({
         method: 'GET',
         url: '/api/v1/traffics/',

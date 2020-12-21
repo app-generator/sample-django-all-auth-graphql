@@ -18,7 +18,7 @@
 $ pip install django-import-export
 ```
 > Then add this package to INSTALLED_APPS in settings.py. Now you can change the admin section of each model and add this feature. so you can easily import the data to your table.
-
+> Please add this package in requirements.txt
 
 ## REST Feature - Status OK
 
@@ -47,7 +47,7 @@ REST_FRAMEWORK = {
 }
 ```
 
-> please add this package in requirements.txt
+> Please add this package in requirements.txt
 
 **Database/table structure**
 
@@ -204,6 +204,8 @@ INSTALLED_APPS = [
 ]
 ```
 
+> Please add this package in requirements.txt
+
 **Database/table structure**
 
 We created two models to display the information in GraphQL API, which includes `Order` & `Sale`:
@@ -239,7 +241,7 @@ class Sale(models.Model):
 
 **Files** (that implements the feature)
 
-- Create the **[schema.py]()** file in your app. Then add the following classes to make your own schema:
+- Create the **[schema.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/schema.py)** file in your app. Then add the following classes to make your own schema:
 > These classes include monthly reports on sales and orders.
 ```python
 import graphene
@@ -302,7 +304,7 @@ class Query(graphene.ObjectType):
         return res
 ```
 
-- To receive data through any app, you need to create a [schema.py]() file in the main app. In this project, the name of the main app is `core`. So in this part, I created a scheam.py:
+- To receive data through any app, you need to create a [schema.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/schema.py) file in the main app. In this project, the name of the main app is `core`. So in this part, I created a scheam.py:
 ```python
 import graphene
 from app.schema import Query as app_query
@@ -315,7 +317,7 @@ class Query(app_query):
 schema = graphene.Schema(query=Query)
 ```
 
-- Then add the url in [urls.py]() in main app:
+- Then add the url in [urls.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/urls.py) in main app:
 ```python
 from django.contrib import admin
 from django.urls import path
@@ -378,41 +380,180 @@ To do this just click on ```IMPORT``` button in each section, then select your c
 
 <br />
 
-## Bar Chart Sample - Status OK 
+## Bar and Line Charts Sample - Status OK 
+
+For this part, we use GraphQL API and Jquery (AJAX) to fetch data and show.
 
 **Database/table structure**
 
-@Todo
+* In this section, we use the previous models, ie `Order` and `Sale`.
 
 <br />
 
 **Files** (that implements the feature)
 
-- Link to file(s)
+- Create a new js file (anywhere you want). named [dashboard.js](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/static/assets/js/dashboard.js) and add it in the page you want to fetch and show.
+- Run AJAX when the page loaded. for doing this I made a function then I call it anywhere I want:
+```js
+function GraghQLAjax(params) {
+    var query = JSON.stringify({
+        query: `query {
+            orders_month_report {
+                month
+                total
+            }
+            sales_month_report {
+                month
+                total_amount
+            }
+        }`
+    });
+
+    $.ajax({
+        method: 'POST',
+        url: '/graphql/',
+        data: query,
+        contentType: 'application/json',
+        success: function (data) {
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            // sales chart
+            var sales_chart_data = [];
+            $.each(data.data.sales_month_report, function (index, obj) {
+                sales_chart_data.push(obj.total_amount);
+            });
+            SalesChart(sales_chart_data, months);
+
+            // orders chart
+            var orders_chart_data = [];
+            $.each(data.data.orders_month_report, function (index, obj) {
+                orders_chart_data.push(obj.total);
+            });
+            OrderChart(orders_chart_data, months);
+
+        },
+        error: function () {
+            alert('Error occurred');
+        }
+    });
+}
+
+
+// charts function
+
+// Line chart
+function SalesChart(data, labels) {
+    // Variables
+    var $chart = $('#chartSales');
+
+    var salesChart = new Chart($chart, {
+        type: 'line',
+        options: {
+            scales: {
+                yAxes: [{
+                    gridLines: {
+                        lineWidth: 1,
+                        color: Charts.colors.gray[900],
+                        zeroLineColor: Charts.colors.gray[900]
+                    },
+                    ticks: {
+                        callback: function (value) {
+                            if (!(value % 10)) {
+                                return '$' + value;
+                            }
+                        }
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (item, data) {
+                        var label = data.datasets[item.datasetIndex].label || '';
+                        var yLabel = item.yLabel;
+                        var content = '';
+
+                        if (data.datasets.length > 1) {
+                            content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+                        }
+
+                        content += '<span class="popover-body-value">$' + yLabel + '</span>';
+                        return content;
+                    }
+                }
+            }
+        },
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Performance',
+                data: data
+            }]
+        }
+    });
+
+    // Save to jQuery object
+    $chart.data('chart', salesChart);
+}
+
+// Bar chart
+function OrderChart(data, labels) {
+    var $chart = $('#chartOrders');
+
+    var ordersChart = new Chart($chart, {
+        type: 'bar',
+        options: {
+            scales: {
+                yAxes: [{
+                    gridLines: {
+                        lineWidth: 1,
+                        color: '#dfe2e6',
+                        zeroLineColor: '#dfe2e6'
+                    },
+                    ticks: {
+                        callback: function (value) {
+                            if (!(value % 10)) {
+                                //return '$' + value + 'k'
+                                return value
+                            }
+                        }
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (item, data) {
+                        var label = data.datasets[item.datasetIndex].label || '';
+                        var yLabel = item.yLabel;
+                        var content = '';
+
+                        if (data.datasets.length > 1) {
+                            content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+                        }
+
+                        content += '<span class="popover-body-value">' + yLabel + '</span>';
+
+                        return content;
+                    }
+                }
+            }
+        },
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Sales',
+                data: data
+            }]
+        }
+    });
+
+    // Save to jQuery object
+    $chart.data('chart', ordersChart);
+}
+```
+
+> Now call `GraghQLAjax` function whatever you want. In this example, after fetching data from GraphQL, the required params sent to the related function to show the data on charts.
 
 <br />
-
-**How to add data on tables**
-
-@Todo
-
-## Line Chart Sample - Status OK 
-
-**Database/table structure**
-
-@Todo
-
-<br />
-
-**Files** (that implements the feature)
-
-- Link to file(s)
-
-<br />
-
-**How to add data on tables**
-
-@Todo
 
 ## Social Login (WIP)
 
