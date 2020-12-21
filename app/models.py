@@ -54,18 +54,18 @@ class Visit(models.Model):
 
 
 class Traffic(models.Model):
-    BOUNCE_RATE_TYPE_UP = 1
-    BOUNCE_RATE_TYPE_DOWN = 2
+    RATE_TYPE_UP = 1
+    RATE_TYPE_DOWN = 2
 
-    BOUNCE_RATE_TYPE_CHOICES = [
-        (BOUNCE_RATE_TYPE_UP, 'up'),
-        (BOUNCE_RATE_TYPE_DOWN, 'down')
+    RATE_TYPE_CHOICES = [
+        (RATE_TYPE_UP, 'up'),
+        (RATE_TYPE_DOWN, 'down')
     ]
 
     referral = models.CharField(max_length=50)
     visitors = models.PositiveIntegerField()
     rate = models.FloatField()
-    rate_type = models.SmallIntegerField(choices=BOUNCE_RATE_TYPE_CHOICES)
+    rate_type = models.SmallIntegerField(choices=RATE_TYPE_CHOICES)
     created_time = models.DateTimeField(db_index=True)
     updated_time = models.DateTimeField(auto_now=True)
 

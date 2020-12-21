@@ -23,7 +23,7 @@ class RESTAPIsTest(TestCase):
             'referral': 'Facebook',
             'visitors': 3,
             'rate': 18.5,
-            'rate_type': Traffic.BOUNCE_RATE_TYPE_UP,
+            'rate_type': Traffic.RATE_TYPE_UP,
             'created_time': datetime.now()
         }
         Traffic.objects.create(**traffic_data)

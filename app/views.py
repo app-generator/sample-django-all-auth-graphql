@@ -3,7 +3,6 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-from app.utils import set_pagination
 from django import template
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -20,6 +19,7 @@ from app.forms import TransactionForm
 from app.models import Traffic, Visit
 from app.models import Transaction
 from app.serializers import TrafficSerializer, VisitSerializer
+from app.utils import set_pagination
 
 
 @login_required(login_url="/login/")

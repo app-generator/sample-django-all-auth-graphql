@@ -1,0 +1,49 @@
+{
+	"info": {
+		"_postman_id": "2850d63b-1a97-4b86-8a43-80fcf827e3f8",
+		"name": "Argon APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1- REST: fetch visits",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/visits/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"visits",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2- REST: fetch traffics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/traffics/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"traffics",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
