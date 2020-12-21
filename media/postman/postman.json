@@ -44,6 +44,33 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "3- GrapgQL: all in one",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n    orders_month_report {\n        month\n        total\n    }\n    sales_month_report {\n        month\n        total_amount\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2000/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

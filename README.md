@@ -23,13 +23,14 @@ $ pip install django-import-export
 ## REST Feature - Status OK
 
 **Requirements**
-To use REST in Django, we'll use `djangorestframework`. To install this package, please follow the procedure below:
+
+To use REST in Django, install `djangorestframework`:
 ‍‍‍
 ```bash
 $ pip install djangorestframework djangorestframework-simplejwt
 ```
 
-In **[settings.py]()** add `rest_framework` in INSTALLED_APPS
+In **[settings.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/settings.py)** add `rest_framework` in INSTALLED_APPS
 ```python
 INSTALLED_APPS = [
     ...
@@ -37,7 +38,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-Then add django rest framework config in **[settings.py]()**:
+Then add django rest framework config in **[settings.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/settings.py)**:
 ```python
 REST_FRAMEWORK = {
     'PAGE_SIZE': 5,
@@ -103,7 +104,7 @@ class Traffic(models.Model):
 
 **Files** (that implements the feature)
 
-- Create **[serializers.py]()** file. Then add serializers `TrafficSerializer` and `VisitSerializer` as follows:
+- Create **[serializers.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/serializers.py)** file. Then add serializers `TrafficSerializer` and `VisitSerializer` as follows:
 ```python
 from rest_framework import serializers
 from app.models import Traffic, Visit
@@ -121,7 +122,7 @@ class VisitSerializer(serializers.ModelSerializer):
         fields = '__all__'
 ```
 
-- In file **[views.py]()**, add the `TrafficViewSet` and `VisitViewSet` ViewSets.
+- In file **[views.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/views.py)** add the `TrafficViewSet` and `VisitViewSet` ViewSets.
 ```python
 from rest_framework.viewsets import ModelViewSet
 from app.models import Traffic, Visit
@@ -140,7 +141,7 @@ class VisitViewSet(ModelViewSet):
     http_method_names = ['get']
 ```
 
-- In file **[urls.py]()**, add the following urls:
+- In file **[urls.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/urls.py)**, add the following urls:
 ```python
 from rest_framework import routers
 from app.views import TrafficViewSet, VisitViewSet
@@ -178,39 +179,202 @@ To do this just click on ```IMPORT``` button in each section, then select your c
 
 ![Import Data](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
 
-> Download **[Visits]()** and **[Traffics]()** Sample data
+> Download **[Visits](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/visits.csv)** and **[Traffics](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/traffics.csv)** Sample data
 
 **How to consume API**
 
-* To use AIPs, you can import the sample **[POSTMAN]()**
+* To use AIPs, you can import the sample **[POSTMAN](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/postman/postman.json)**
 
 <br />
 
 ## GraphQL Feature - Status OK
 
+**Requirements**
+
+To use GraphQL in Django install `graphene-django`:
+```bash
+$ pip install graphene-django
+```
+
+In **[settings.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/settings.py)** add `graphene-django` in INSTALLED_APPS
+```python
+INSTALLED_APPS = [
+    ...
+    'graphene_django',
+]
+```
+
 **Database/table structure**
 
-@Todo
+We created two models to display the information in GraphQL API, which includes `Order` & `Sale`:
+
+```python
+from django.db import models
+
+
+class Order(models.Model):
+    count = models.PositiveIntegerField()
+    amount = models.FloatField(db_index=True)
+    product_name = models.CharField(max_length=40, db_index=True)
+    created_time = models.DateTimeField(db_index=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'order'
+        verbose_name_plural = 'orders'
+
+
+class Sale(models.Model):
+    amount = models.FloatField(db_index=True)
+    product_name = models.CharField(max_length=40, db_index=True)
+    created_time = models.DateTimeField(db_index=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'sale'
+        verbose_name_plural = 'sales'
+```
 
 <br />
 
 **Files** (that implements the feature)
 
-- Link to file(s)
+- Create the **[schema.py]()** file in your app. Then add the following classes to make your own schema:
+> These classes include monthly reports on sales and orders.
+```python
+import graphene
+from django.db.models import Count, Sum
+from django.db.models.functions import TruncMonth
+from app.models import Order, Sale
+
+
+class OrderMonthReportType(graphene.ObjectType):
+    month = graphene.Int()
+    total = graphene.Int(name='total')
+
+
+class SalesMonthReportType(graphene.ObjectType):
+    month = graphene.Int()
+    total_amount = graphene.Float(name='total_amount')
+
+
+class Query(graphene.ObjectType):
+    orders_month_report = graphene.List(
+        OrderMonthReportType,
+        name='orders_month_report'
+    )
+
+    sales_month_report = graphene.List(
+        SalesMonthReportType,
+        name='sales_month_report'
+    )
+
+    def resolve_orders_month_report(self, info, **kwargs):
+        queryset = Order.objects.annotate(
+            date=TruncMonth('created_time')
+        ).values('date').annotate(total=Count('id')).values('date', 'total').order_by('date')
+
+        report = {month: 0 for month in range(1, 13)}
+        for order_month in queryset:
+            report[order_month['date'].month] += order_month['total']
+        report = sorted(report.items())
+
+        res = []
+        for month, total in report:
+            res.append({'month': month, 'total': total})
+
+        return res
+
+    def resolve_sales_month_report(self, info, **kwargs):
+        queryset = Sale.objects.annotate(
+            date=TruncMonth('created_time')
+        ).values('date').annotate(total_amount=Sum('amount')).values('date', 'total_amount').order_by('date')
+
+        report = {month: 0 for month in range(1, 13)}
+        for order_month in queryset:
+            report[order_month['date'].month] += round(order_month['total_amount'], 2)
+        report = sorted(report.items())
+
+        res = []
+        for month, total_amount in report:
+            res.append({'month': month, 'total_amount': total_amount})
+
+        return res
+```
+
+- To receive data through any app, you need to create a [schema.py]() file in the main app. In this project, the name of the main app is `core`. So in this part, I created a scheam.py:
+```python
+import graphene
+from app.schema import Query as app_query
+
+
+class Query(app_query):
+    pass
+
+
+schema = graphene.Schema(query=Query)
+```
+
+- Then add the url in [urls.py]() in main app:
+```python
+from django.contrib import admin
+from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
+from core.schema import schema
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    
+    # This is our GraphQL URL
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
+]
+```
+> We enabled ‍‍‍`graphiql` to run queries with `graphiql=True`
+
+- Now you can open `http://localhost:8000/graphql/` in your browser and run your queries.
+
+Sample Query:
+```text
+{
+  orders_month_report{
+    total
+    month
+  }
+  sales_month_report{
+    total_amount
+    month
+  }
+}
+```
 
 <br />
 
 **API structure**
 
-@Todo
+The `orders` and `sales` APIs structure follow the Django GraphQL:
+```json
+{
+  "data": {  # "GraphQL data in the form of a list"
+    "orders_month_report": [],
+    "sales_month_report": []
+  }
+}
+```
 
 **How to add data**
 
-@Todo
+In Django admin, you can import data for the **Orders** and **Sales** sections. 
+To do this just click on ```IMPORT``` button in each section, then select your csv, xls or etc file and submit it.
+
+![Import Data](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
+
+> Download **[Orders](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/orders.csv)** and **[Sales](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/sales.csv)** Sample data
+
 
 **How to consume API**
 
-@Todo - Using POSTMAN
+* To use AIPs, you can import the sample **[POSTMAN](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/postman/postman.json)**
 
 <br />
 
