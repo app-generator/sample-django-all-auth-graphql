@@ -51,7 +51,7 @@ REST_FRAMEWORK = {
 
 **Database/table structure**
 
-We created two models to display the information in REST API, which includes `Visit` & `Traffic`:
+Create two models to display the information in REST API, which includes `Visit` & `Traffic`:
 
 ```python
 from django.db import models
@@ -552,6 +552,57 @@ function OrderChart(data, labels) {
 ```
 
 > Now call `GraghQLAjax` function whatever you want. In this example, after fetching data from GraphQL, the required params sent to the related function to show the data on charts.
+
+<br />
+
+## Datatable - Status OK 
+
+In this section, you can `search`, `edit` and `delete` the transactions. The added features of this `datatable` are:
+    - Paginated information (transaction page) with usable controls: PREV, 1,2,3., NEXT
+    - Search box to filter
+    - Delete row control
+    - edit cel data on double click and ENTER on confirm.
+
+**Database/table structure**
+
+Create the `Transaction` model to show data in the datatable:
+```python
+from django.db import models
+
+
+class Transaction(models.Model):
+    bill_for = models.CharField(max_length=100)
+    issue_date = models.DateField()
+    due_date = models.DateField()
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+
+    status = models.CharField(max_length=10)
+
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'transaction'
+        verbose_name_plural = 'transactions'
+```
+
+<br />
+
+**How to add data**
+
+In Django admin, you can import data for the **Transaction** sections. 
+To do this just click on ```IMPORT``` button in each section, then select your csv, xls or etc file and submit it.
+
+![Import Data](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
+
+> Download **[Transactions](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/transactions.csv)** Sample data
+
+
+<br />
+
+**Files** (that implements the feature)
+
+- Link to file(s)
 
 <br />
 
