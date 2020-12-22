@@ -558,6 +558,7 @@ function OrderChart(data, labels) {
 ## Datatable - Status OK 
 
 In this section, you can `search`, `edit` and `delete` the transactions. The added features of this `datatable` are:
+    
     - Paginated information (transaction page) with usable controls: PREV, 1,2,3., NEXT
     - Search box to filter
     - Delete row control
@@ -602,7 +603,28 @@ To do this just click on ```IMPORT``` button in each section, then select your c
 
 **Files** (that implements the feature)
 
-- Link to file(s)
+- In this section, create a view in [view.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/views.py) to implement CRUD (`Create`, `Read`, `Update`, `Delete`):
+
+```python
+from django.views import View
+
+class TransactionView(View):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+    def put(self, request):
+        pass
+
+    def delete(self, request):
+        pass
+```
+
+> We use `get` to display items and forms, `post` to store a new item, `put` to update an item, and `delete` to remove an item.
+
+- jQuery (AJAX) has been used to make changes in the datatable. Which is located in the [app_js.js](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/static/app_assets/js/app_js.js).
 
 <br />
 
@@ -622,9 +644,14 @@ To do this just click on ```IMPORT``` button in each section, then select your c
 
 ## Unitary Tests - Status WIP
 
-- **How to test feature 1**
-- **How to test feature 2**
-- **How to test feature 3**
+- **REST APIs test:**
+```bash
+$ python manage.py test app.tests.RESTAPIsTest
+```
+- **GraphQL test:**
+```bash
+$ python manage.py test app.tests.GraphQLAPIsTest
+```
 
 <br />
 
