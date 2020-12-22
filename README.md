@@ -357,7 +357,7 @@ Sample Query:
 The `orders` and `sales` APIs structure follow the Django GraphQL:
 ```json
 {
-  "data": {  # "GraphQL data in the form of a list"
+  "data": {
     "orders_month_report": [],
     "sales_month_report": []
   }
