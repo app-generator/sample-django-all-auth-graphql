@@ -643,7 +643,7 @@ In this section, we selected Google and Github to implement.
 
 - Added buttons in [login.html](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/templates/accounts/login.html) and [register.html](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/templates/accounts/register.html).
 
-![Social Auth](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
+![Social Auth](https://raw.githubusercontent.com/app-generator/django-dashboard-argon-eps/master/media/django-dashboard-argon-signin-signup.png)
 
 <br />
 
