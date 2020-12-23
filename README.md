@@ -630,15 +630,20 @@ class TransactionView(View):
 
 ## Social Login (WIP)
 
-**Database/table structure**
+**Requirements**
 
-@Todo
+There is a convenient package to an integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication that is very easy to use.
+The package is `django-allauth`‍ and you can read its [doc](https://django-allauth.readthedocs.io/en/latest/index.html) to use it. and also recommend a [youtube video](https://www.youtube.com/watch?v=56w8p0goIfs) for easier implementation.
 
 <br />
 
 **Files** (that implements the feature)
 
-- Link to file(s)
+In this section, we selected Google and Github to implement.
+
+- Added buttons in [login.html](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/templates/accounts/login.html) and [register.html](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/templates/accounts/register.html).
+
+![Social Auth](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
 
 <br />
 
