@@ -5,10 +5,10 @@
 - REST - simple node
 - GraphQL - simple node
 - Charts - bar chart and line chart
-- (WIP) Datatables - pagination, search, inline edit (via Ajax) 
-- (WIP) Social Login - AllAuth package integration for Google and Github 
-- (WIP) Unitary Tests
-- (WIP) Documentation 
+- Datatables - pagination, search, inline edit (via Ajax) 
+- Social Login - AllAuth package integration for Google and Github 
+- Unitary Tests
+- Documentation 
 
 <br />
 
