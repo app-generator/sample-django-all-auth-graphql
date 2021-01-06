@@ -82,7 +82,6 @@ class Visit(models.Model):
         verbose_name = 'visit'
         verbose_name_plural = 'visits'
 
-
 class Traffic(models.Model):
     RATE_TYPE_UP = 1
     RATE_TYPE_DOWN = 2
@@ -379,7 +378,7 @@ To do this just click on ```IMPORT``` button in each section, then select your c
 
 <br />
 
-## Bar and Line Charts Sample - Status OK 
+## Charts Samples
 
 For this part, we use GraphQL API and Jquery (AJAX) to fetch data and show.
 
