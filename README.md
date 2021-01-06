@@ -10,7 +10,14 @@
 - DataTables - pagination, search, inline edit (via Ajax) 
 - Social Login via AllAuth (Google and Github) 
 - Unitary Tests
-- Documentation 
+- Documentation (this file) - Full docs are WIP.
+
+<br />
+
+**Issues & Support**
+
+- Please use the issues tracker to report bugs or missing docs. The project is actively supported.
+- Feel free to sugegst more features. 
 
 <br />
 
@@ -553,7 +560,7 @@ function OrderChart(data, labels) {
 
 <br />
 
-## Datatable 
+## DataTables (paginated information)
 
 In this section, you can `search`, `edit` and `delete` the transactions. The added features of this `datatable` are:
     
