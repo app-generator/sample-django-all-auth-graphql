@@ -1,18 +1,21 @@
-# Django Dashboard Argon
+# Django Seed Project
 
-> **Open-Source Admin Dashboard** coded in **Django Framework** by **AppSeed** [Web App Generator](https://appseed.us/app-generator) - features:
+> **Open-Source Admin Dashboard** coded in **Django Framework** by **AppSeed** [App Generator](https://appseed.us/app-generator) - Features:
 
-- REST - simple node
-- GraphQL - simple node
-- Charts - bar chart and line chart
-- Datatables - pagination, search, inline edit (via Ajax) 
-- Social Login - AllAuth package integration for Google and Github 
+<br />
+
+- REST API
+- GraphQL API
+- Charts Samples - Bar chart, Line chart
+- DataTables - pagination, search, inline edit (via Ajax) 
+- Social Login via AllAuth (Google and Github) 
 - Unitary Tests
 - Documentation 
 
 <br />
 
 ## Base Requirements
+
 - Install `django-import-export` package to import data form csv, xls and etc file to table.
 ```bash
 $ pip install django-import-export
@@ -20,9 +23,11 @@ $ pip install django-import-export
 > Then add this package to INSTALLED_APPS in settings.py. Now you can change the admin section of each model and add this feature. so you can easily import the data to your table.
 > Please add this package in requirements.txt
 
-## REST Feature - Status OK
+<br />
 
-**Requirements**
+## REST API
+
+> How to use it
 
 To use REST in Django, install `djangorestframework`:
 ‍‍‍
@@ -30,7 +35,7 @@ To use REST in Django, install `djangorestframework`:
 $ pip install djangorestframework djangorestframework-simplejwt
 ```
 
-In **[settings.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/settings.py)** add `rest_framework` in INSTALLED_APPS
+In **[settings.py](https://github.com/app-generator/django-dashboard-eps/blob/master/core/settings.py)** add `rest_framework` in INSTALLED_APPS
 ```python
 INSTALLED_APPS = [
     ...
@@ -38,7 +43,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-Then add django rest framework config in **[settings.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/settings.py)**:
+Then add django rest framework config in **[settings.py](https://github.com/app-generator/django-dashboard-eps/blob/master/core/settings.py)**:
 ```python
 REST_FRAMEWORK = {
     'PAGE_SIZE': 5,
@@ -56,7 +61,6 @@ Create two models to display the information in REST API, which includes `Visit`
 ```python
 from django.db import models
 
-
 class Visit(models.Model):
     BOUNCE_RATE_TYPE_UP = 1
     BOUNCE_RATE_TYPE_DOWN = 2
@@ -66,13 +70,13 @@ class Visit(models.Model):
         (BOUNCE_RATE_TYPE_DOWN, 'down')
     ]
 
-    page_name = models.CharField(max_length=255)
-    visitors = models.PositiveIntegerField()
-    unique_users = models.PositiveIntegerField()
-    bounce_rate = models.FloatField()
+    page_name        = models.CharField(max_length=255)
+    visitors         = models.PositiveIntegerField()
+    unique_users     = models.PositiveIntegerField()
+    bounce_rate      = models.FloatField()
     bounce_rate_type = models.SmallIntegerField(choices=BOUNCE_RATE_TYPE_CHOICES)
-    created_time = models.DateTimeField(db_index=True)
-    updated_time = models.DateTimeField(auto_now=True)
+    created_time     = models.DateTimeField(db_index=True)
+    updated_time     = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'visit'
@@ -88,10 +92,10 @@ class Traffic(models.Model):
         (RATE_TYPE_DOWN, 'down')
     ]
 
-    referral = models.CharField(max_length=50)
-    visitors = models.PositiveIntegerField()
-    rate = models.FloatField()
-    rate_type = models.SmallIntegerField(choices=RATE_TYPE_CHOICES)
+    referral     = models.CharField(max_length=50)
+    visitors     = models.PositiveIntegerField()
+    rate         = models.FloatField()
+    rate_type    = models.SmallIntegerField(choices=RATE_TYPE_CHOICES)
     created_time = models.DateTimeField(db_index=True)
     updated_time = models.DateTimeField(auto_now=True)
 
@@ -104,17 +108,15 @@ class Traffic(models.Model):
 
 **Files** (that implements the feature)
 
-- Create **[serializers.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/serializers.py)** file. Then add serializers `TrafficSerializer` and `VisitSerializer` as follows:
+- Create **[serializers.py](https://github.com/app-generator/django-dashboard-eps/blob/master/app/serializers.py)** file. Then add serializers `TrafficSerializer` and `VisitSerializer` as follows:
 ```python
 from rest_framework import serializers
 from app.models import Traffic, Visit
-
 
 class TrafficSerializer(serializers.ModelSerializer):
     class Meta:
         model = Traffic
         fields = '__all__'
-
 
 class VisitSerializer(serializers.ModelSerializer):
     class Meta:
@@ -122,7 +124,7 @@ class VisitSerializer(serializers.ModelSerializer):
         fields = '__all__'
 ```
 
-- In file **[views.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/views.py)** add the `TrafficViewSet` and `VisitViewSet` ViewSets.
+- In file **[views.py](https://github.com/app-generator/django-dashboard-eps/blob/master/app/views.py)** add the `TrafficViewSet` and `VisitViewSet` ViewSets.
 ```python
 from rest_framework.viewsets import ModelViewSet
 from app.models import Traffic, Visit
@@ -141,7 +143,7 @@ class VisitViewSet(ModelViewSet):
     http_method_names = ['get']
 ```
 
-- In file **[urls.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/urls.py)**, add the following urls:
+- In file **[urls.py](https://github.com/app-generator/django-dashboard-eps/blob/master/app/urls.py)**, add the following urls:
 ```python
 from rest_framework import routers
 from app.views import TrafficViewSet, VisitViewSet
@@ -179,24 +181,24 @@ To do this just click on ```IMPORT``` button in each section, then select your c
 
 ![Import Data](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
 
-> Download **[Visits](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/visits.csv)** and **[Traffics](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/traffics.csv)** Sample data
+> Download **[Visits](https://github.com/app-generator/django-dashboard-eps/blob/master/media/sample_data/visits.csv)** and **[Traffics](https://github.com/app-generator/django-dashboard-eps/blob/master/media/sample_data/traffics.csv)** Sample data
 
 **How to consume API**
 
-* To use AIPs, you can import the sample **[POSTMAN](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/postman/postman.json)**
+* To use AIPs, you can import the sample **[POSTMAN](https://github.com/app-generator/django-dashboard-eps/blob/master/media/postman/postman.json)**
 
 <br />
 
-## GraphQL Feature - Status OK
+## GraphQL API
 
-**Requirements**
+> How to use it
 
 To use GraphQL in Django install `graphene-django`:
 ```bash
 $ pip install graphene-django
 ```
 
-In **[settings.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/settings.py)** add `graphene-django` in INSTALLED_APPS
+In **[settings.py](https://github.com/app-generator/django-dashboard-eps/blob/master/core/settings.py)** add `graphene-django` in INSTALLED_APPS
 ```python
 INSTALLED_APPS = [
     ...
@@ -213,10 +215,9 @@ We created two models to display the information in GraphQL API, which includes 
 ```python
 from django.db import models
 
-
 class Order(models.Model):
-    count = models.PositiveIntegerField()
-    amount = models.FloatField(db_index=True)
+    count        = models.PositiveIntegerField()
+    amount       = models.FloatField(db_index=True)
     product_name = models.CharField(max_length=40, db_index=True)
     created_time = models.DateTimeField(db_index=True)
     updated_time = models.DateTimeField(auto_now=True)
@@ -227,7 +228,7 @@ class Order(models.Model):
 
 
 class Sale(models.Model):
-    amount = models.FloatField(db_index=True)
+    amount       = models.FloatField(db_index=True)
     product_name = models.CharField(max_length=40, db_index=True)
     created_time = models.DateTimeField(db_index=True)
     updated_time = models.DateTimeField(auto_now=True)
@@ -241,7 +242,7 @@ class Sale(models.Model):
 
 **Files** (that implements the feature)
 
-- Create the **[schema.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/schema.py)** file in your app. Then add the following classes to make your own schema:
+- Create the **[schema.py](https://github.com/app-generator/django-dashboard-eps/blob/master/app/schema.py)** file in your app. Then add the following classes to make your own schema:
 > These classes include monthly reports on sales and orders.
 ```python
 import graphene
@@ -254,11 +255,9 @@ class OrderMonthReportType(graphene.ObjectType):
     month = graphene.Int()
     total = graphene.Int(name='total')
 
-
 class SalesMonthReportType(graphene.ObjectType):
     month = graphene.Int()
     total_amount = graphene.Float(name='total_amount')
-
 
 class Query(graphene.ObjectType):
     orders_month_report = graphene.List(
@@ -304,20 +303,20 @@ class Query(graphene.ObjectType):
         return res
 ```
 
-- To receive data through any app, you need to create a [schema.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/schema.py) file in the main app. In this project, the name of the main app is `core`. So in this part, I created a scheam.py:
+- To receive data through any app, you need to create a [schema.py](https://github.com/app-generator/django-dashboard-eps/blob/master/core/schema.py) file in the main app. In this project, the name of the main app is `core`. So in this part, I created a scheam.py:
+
 ```python
 import graphene
 from app.schema import Query as app_query
 
-
 class Query(app_query):
     pass
-
 
 schema = graphene.Schema(query=Query)
 ```
 
-- Then add the url in [urls.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/urls.py) in main app:
+- Then add the url in [urls.py](https://github.com/app-generator/django-dashboard-eps/blob/master/core/urls.py) in `main` app:
+
 ```python
 from django.contrib import admin
 from django.urls import path
@@ -371,12 +370,12 @@ To do this just click on ```IMPORT``` button in each section, then select your c
 
 ![Import Data](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
 
-> Download **[Orders](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/orders.csv)** and **[Sales](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/sales.csv)** Sample data
+> Download **[Orders](https://github.com/app-generator/django-dashboard-eps/blob/master/media/sample_data/orders.csv)** and **[Sales](https://github.com/app-generator/django-dashboard-eps/blob/master/media/sample_data/sales.csv)** Sample data
 
 
 **How to consume API**
 
-* To use AIPs, you can import the sample **[POSTMAN](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/postman/postman.json)**
+* To use AIPs, you can import the sample **[POSTMAN](https://github.com/app-generator/django-dashboard-eps/blob/master/media/postman/postman.json)**
 
 <br />
 
@@ -392,8 +391,9 @@ For this part, we use GraphQL API and Jquery (AJAX) to fetch data and show.
 
 **Files** (that implements the feature)
 
-- Create a new js file (anywhere you want). named [dashboard.js](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/static/assets/js/dashboard.js) and add it in the page you want to fetch and show.
-- Run AJAX when the page loaded. for doing this I made a function then I call it anywhere I want:
+- Create a new js file (anywhere you want). named [dashboard.js](https://github.com/app-generator/django-dashboard-eps/blob/master/core/static/assets/js/dashboard.js) and add it in the page you want to fetch and show.
+- Run AJAX when the page loaded. for doing this I made a function then I call it anywhere:
+
 ```js
 function GraghQLAjax(params) {
     var query = JSON.stringify({
@@ -437,7 +437,6 @@ function GraghQLAjax(params) {
         }
     });
 }
-
 
 // charts function
 
@@ -555,21 +554,22 @@ function OrderChart(data, labels) {
 
 <br />
 
-## Datatable - Status OK 
+## Datatable 
 
 In this section, you can `search`, `edit` and `delete` the transactions. The added features of this `datatable` are:
     
-    - Paginated information (transaction page) with usable controls: PREV, 1,2,3., NEXT
-    - Search box to filter
-    - Delete row control
-    - edit cel data on double click and ENTER on confirm.
+- Paginated information (transaction page) with usable controls: PREV, 1,2,3., NEXT
+- Search box to filter
+- Delete row control
+- edit cel data on double click and ENTER on confirm.
+
+<br />
 
 **Database/table structure**
 
 Create the `Transaction` model to show data in the datatable:
 ```python
 from django.db import models
-
 
 class Transaction(models.Model):
     bill_for = models.CharField(max_length=100)
@@ -596,14 +596,14 @@ To do this just click on ```IMPORT``` button in each section, then select your c
 
 ![Import Data](https://raw.githubusercontent.com/app-generator/django-simple-charts/master/media/admin_import.png)
 
-> Download **[Transactions](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/media/sample_data/transactions.csv)** Sample data
+> Download **[Transactions](https://github.com/app-generator/django-dashboard-eps/blob/master/media/sample_data/transactions.csv)** Sample data
 
 
 <br />
 
 **Files** (that implements the feature)
 
-- In this section, create a view in [view.py](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/views.py) to implement CRUD (`Create`, `Read`, `Update`, `Delete`):
+- In this section, create a view in [view.py](https://github.com/app-generator/django-dashboard-eps/blob/master/app/views.py) to implement CRUD (`Create`, `Read`, `Update`, `Delete`):
 
 ```python
 from django.views import View
@@ -624,11 +624,11 @@ class TransactionView(View):
 
 > We use `get` to display items and forms, `post` to store a new item, `put` to update an item, and `delete` to remove an item.
 
-- jQuery (AJAX) has been used to make changes in the datatable. Which is located in the [app_js.js](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/app/static/app_assets/js/app_js.js).
+- jQuery (AJAX) has been used to make changes in the datatable. Which is located in the [app_js.js](https://github.com/app-generator/django-dashboard-eps/blob/master/app/static/app_assets/js/app_js.js).
 
 <br />
 
-## Social Login (WIP)
+## Social Login
 
 **Requirements**
 
@@ -641,23 +641,26 @@ The package is `django-allauth`‍ and you can read its [doc](https://django-all
 
 In this section, we selected Google and Github to implement.
 
-- Added buttons in [login.html](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/templates/accounts/login.html) and [register.html](https://github.com/app-generator/django-dashboard-argon-eps/blob/master/core/templates/accounts/register.html).
+- Added buttons in [login.html](https://github.com/app-generator/django-dashboard-eps/blob/master/core/templates/accounts/login.html) and [register.html](https://github.com/app-generator/django-dashboard-eps/blob/master/core/templates/accounts/register.html).
 
-![Social Auth](https://raw.githubusercontent.com/app-generator/django-dashboard-argon-eps/master/media/django-dashboard-argon-signin-signup.png)
+![Social Auth](https://raw.githubusercontent.com/app-generator/django-dashboard-eps/master/media/django-dashboard-argon-signin-signup.png)
 
 <br />
 
-## Unitary Tests - Status WIP
+## Unitary Tests
 
 - **REST APIs test:**
 ```bash
 $ python manage.py test app.tests.RESTAPIsTest
 ```
+
+<br />
+
 - **GraphQL test:**
+
 ```bash
 $ python manage.py test app.tests.GraphQLAPIsTest
 ```
-
 <br />
 
 ## Full Documentation (WIP) 
@@ -667,4 +670,4 @@ This section will point users to https://docs.appseed.us (WIP)
 <br />
 
 ---
-Django Dashboard Argon - Provided by **AppSeed** [Web App Generator](https://appseed.us/app-generator).
+Django Seed Project - Provided by **AppSeed** [App Generator](https://appseed.us/app-generator).
