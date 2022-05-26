@@ -4,7 +4,7 @@
 
 <br />
 
-- REST API
+- REST API 
 - GraphQL API
 - Charts Samples - Bar chart, Line chart
 - DataTables - pagination, search, inline edit (via Ajax) 
