@@ -12,14 +12,15 @@
 - Unitary Tests
 - Documentation (this file) - Full docs are WIP.
 
-<br />
+<br /> 
 
-**Issues & Support**
+> 🚀 `PROMO`: **[Junior Developers Starter KIT](https://www.creative-tim.com/product/buy/bundle/junior-bundle?AFFILIATE=128200)** `85%OFF`
 
-- Please use the issues tracker to report bugs or missing docs. The project is actively supported.
-- Feel free to sugegst more features. 
+The package includes a `rock-solid collection of premium assets` (**Kits & Dashboards**) that can be used to build eye-catching portfolios and web apps in no time.
 
-<br />
+[![Junior Developers Starter KIT](https://user-images.githubusercontent.com/51854817/195055646-e55200cd-0ddd-4bdd-aded-0d4e4479789b.png)](https://www.creative-tim.com/product/buy/bundle/junior-bundle?AFFILIATE=128200)
+
+<br /> 
 
 ## Base Requirements
 
